@@ -3,11 +3,17 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    nix-darwin.url = "github:nix-darwin/nix-darwin/master";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nix-darwin, nixpkgs }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
   let
     configuration = { pkgs, ... }: {
       nixpkgs.config.allowUnfree = true;
@@ -43,14 +49,36 @@
       # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true;
       
+      # Enabled TouchID for sudo
       security.pam.services.sudo_local.touchIdAuth = true;
+    };
+    homeconfig = {pkgs, ...}: {
+      # this is internal compatibility configuration 
+      # for home-manager, don't change this!
+      home.stateVersion = "25.05";
+      # Let home-manager install and manage itself.
+      programs.home-manager.enable = true;
+
+      home.packages = with pkgs; [];
+
+      home.sessionVariables = {
+          EDITOR = "vscode";
+      };
     };
   in
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
     darwinConfigurations."rhys-lap-osx" = nix-darwin.lib.darwinSystem {
-      modules = [ configuration ];
+      modules = [
+        configuration
+        home-manager.darwinModules.home-manager  {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.verbose = true;
+          home-manager.users.rhys = homeconfig;
+        }
+      ];
     };
   };
 }
