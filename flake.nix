@@ -16,7 +16,7 @@
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
   let
     hostConfig = import ./host.nix;
-    dockConfig = import ./dock.nix;
+    dockConfig = import ./dock.nix { inherit hostConfig; };
     homebrewConfig = import ./homebrew.nix;
     configuration = { pkgs, ... }: homebrewConfig // {
       # Nixpkgs configuration
