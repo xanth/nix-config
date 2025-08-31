@@ -45,6 +45,12 @@
 
           pkgs.vscode
           pkgs.jetbrains.rider
+          
+          # .NET SDKs combined
+          (pkgs.dotnetCorePackages.combinePackages [
+            pkgs.dotnetCorePackages.sdk_9_0
+            pkgs.dotnetCorePackages.sdk_10_0
+          ])
         ];
 
       # System configuration
