@@ -20,6 +20,7 @@
     homebrewModule = import ./modules/system-homebrew.nix;
     systemPreferencesModule = import ./modules/system-preferences.nix;
     alacrittyModule = import ./modules/alacritty.nix;
+    powershellModule = import ./modules/powershell.nix;
     homeconfig = {pkgs, ...}: {
       # this is internal compatibility configuration 
       # for home-manager, don't change this!
@@ -42,6 +43,7 @@
         ({ pkgs, ... }: systemPreferencesModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: dockModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
           nixpkgs = {
@@ -54,9 +56,9 @@
           ];
 
           environment.systemPackages = with pkgs; [
-            vim 
-            
-            powershell
+            vim
+
+            # cli tools
             zoxide
             fzf
             ripgrep
@@ -65,12 +67,6 @@
             starship
             direnv
             
-            # .NET SDKs combined
-            (dotnetCorePackages.combinePackages [
-              dotnetCorePackages.sdk_9_0
-              dotnetCorePackages.sdk_10_0
-            ])
-
             vscode
             jetbrains.rider
           ];

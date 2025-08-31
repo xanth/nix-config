@@ -47,6 +47,11 @@
             args = [];
           };
         };
+
+        env = {
+          TERM = "alacritty";
+          PATH = "/run/current-system/sw/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin:${pkgs.powershell}/bin";
+        };
       };
     };
   };
