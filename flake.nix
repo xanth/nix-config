@@ -19,7 +19,7 @@
     dockConfig = import ./dock.nix { inherit hostConfig; };
     homebrew-config = import ./homebrew.nix;
     user-preferences = import ./user-preferences.nix;
-    alacrittyConfig = import ./apps/alacritty.nix;
+    alacrittyModule = import ./modules/alacritty.nix;
     homeconfig = {pkgs, ...}: {
       # this is internal compatibility configuration 
       # for home-manager, don't change this!
@@ -40,7 +40,7 @@
       modules = [
         homebrew-config
         user-preferences
-        alacrittyConfig
+        ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
           nixpkgs = {
