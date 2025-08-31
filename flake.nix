@@ -16,7 +16,7 @@
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
   let
     hostConfig = import ./host.nix;
-    dockConfig = import ./dock.nix { inherit hostConfig; };
+    dockModule = import ./modules/system-dock.nix;
     homebrewModule = import ./modules/system-homebrew.nix;
     systemPreferencesModule = import ./modules/system-preferences.nix;
     alacrittyModule = import ./modules/alacritty.nix;
@@ -40,6 +40,7 @@
       modules = [
         ({ pkgs, ... }: homebrewModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: systemPreferencesModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: dockModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
@@ -82,7 +83,7 @@
             # $ darwin-rebuild changelog
             stateVersion = 6;
             primaryUser = hostConfig.userName;
-          } // dockConfig;
+          };
 
           # Nix configuration
           nix.settings.experimental-features = "nix-command flakes";

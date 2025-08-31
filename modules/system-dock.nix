@@ -1,7 +1,7 @@
-# Dock configuration - macOS dock appearance and behavior settings
-{ hostConfig }:
+# Dock module - macOS dock appearance and behavior settings
+{ pkgs, hostConfig, ... }:
 {
-  defaults.dock = {
+  system.defaults.dock = {
     autohide = true; # auto show and hide dock
     autohide-delay = 0.0; # remove delay for showing dock
     autohide-time-modifier = 0.2; # how fast is the dock showing animation
