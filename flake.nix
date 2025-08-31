@@ -18,7 +18,7 @@
     hostConfig = import ./host.nix;
     dockConfig = import ./dock.nix { inherit hostConfig; };
     homebrew-config = import ./homebrew.nix;
-    user-preferences = import ./user-preferences.nix;
+    systemPreferencesModule = import ./modules/system-preferences.nix;
     alacrittyModule = import ./modules/alacritty.nix;
     homeconfig = {pkgs, ...}: {
       # this is internal compatibility configuration 
@@ -39,7 +39,7 @@
     darwinConfigurations.${hostConfig.hostName} = nix-darwin.lib.darwinSystem {
       modules = [
         homebrew-config
-        user-preferences
+        ({ pkgs, ... }: systemPreferencesModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
