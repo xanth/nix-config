@@ -28,17 +28,6 @@
       location = "~/Desktop/Screenshots";
       type = "png";
     };
-    "com.apple.Safari" = {
-      # Press Tab to highlight each item on a web page
-      WebKitTabToLinksPreferenceKey = true;
-      ShowFullURLInSmartSearchField = true;
-      ShowFavoritesBar = false;
-      IncludeInternalDebugMenu = true;
-      IncludeDevelopMenu = true;
-      WebKitDeveloperExtrasEnabledPreferenceKey = true;
-      WebContinuousSpellCheckingEnabled = true;
-      WebAutomaticSpellingCorrectionEnabled = false;
-    };
     "com.apple.print.PrintingPrefs" = {
       # Automatically quit printer app once the print jobs complete
       "Quit When Finished" = true;
