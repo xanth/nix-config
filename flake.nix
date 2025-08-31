@@ -17,7 +17,7 @@
   let
     hostConfig = import ./host.nix;
     dockConfig = import ./dock.nix { inherit hostConfig; };
-    homebrew-config = import ./homebrew.nix;
+    homebrewModule = import ./modules/system-homebrew.nix;
     systemPreferencesModule = import ./modules/system-preferences.nix;
     alacrittyModule = import ./modules/alacritty.nix;
     homeconfig = {pkgs, ...}: {
@@ -38,7 +38,7 @@
   {
     darwinConfigurations.${hostConfig.hostName} = nix-darwin.lib.darwinSystem {
       modules = [
-        homebrew-config
+        ({ pkgs, ... }: homebrewModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: systemPreferencesModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {

@@ -1,4 +1,5 @@
-# Homebrew configuration - package management and application installation
+# Homebrew module - package management and application installation
+{ pkgs, hostConfig, ... }:
 {
   homebrew = {
     enable = true;
