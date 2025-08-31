@@ -17,7 +17,8 @@
   let
     hostConfig = import ./host.nix;
     dockConfig = import ./dock.nix;
-    configuration = { pkgs, ... }: {
+    homebrewConfig = import ./homebrew.nix;
+    configuration = { pkgs, ... }: homebrewConfig // {
       # Nixpkgs configuration
       nixpkgs = {
         config.allowUnfree = true;
@@ -44,30 +45,6 @@
           pkgs.vscode
           pkgs.jetbrains.rider
         ];
-
-      homebrew = {
-        enable = true;
-        onActivation = {
-          cleanup = "zap";
-          autoUpdate = true;
-          upgrade = true;
-        };
-        global.autoUpdate = true;
-
-        brews = [
-        ];
-        taps = [
-        ];
-        casks = [
-          "github"
-          "AlDente"
-        ];
-        masApps = {
-          "Bitwarden" = 1352778147;
-          "Yubico Authenticator" = 1497506650;
-          "Kagi for Safari" = 1622835804;
-        };
-      };
 
       # System configuration
       system = {
