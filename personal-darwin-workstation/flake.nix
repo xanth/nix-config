@@ -18,11 +18,52 @@
     configuration = { pkgs, ... }: {
       nixpkgs.config.allowUnfree = true;
 
-      # List packages installed in system profile. To search by name, run:
-      # $ nix-env -qaP | grep wget
+      system.primaryUser = "rhys";
+      users.knownUsers = [
+        "rhys"
+      ];
+      users.users.rhys.uid = 501;
+
       environment.systemPackages =
-        [ pkgs.vim pkgs.vscode
+        [ pkgs.vim 
+          
+          pkgs.alacritty
+          pkgs.powershell
+          pkgs.zoxide
+          pkgs.fzf
+          pkgs.ripgrep
+          pkgs.bat
+          pkgs.ast-grep
+          pkgs.starship
+          pkgs.direnv
+
+          pkgs.vscode
+          pkgs.jetbrains.rider
         ];
+
+      homebrew = {
+        enable = true;
+        onActivation = {
+          cleanup = "zap";
+          autoUpdate = true;
+          upgrade = true;
+        };
+        global.autoUpdate = true;
+
+        brews = [
+        ];
+        taps = [
+        ];
+        casks = [
+          "github"
+          "AlDente"
+        ];
+        masApps = {
+          "Bitwarden" = 1352778147;
+          "Yubico Authenticator" = 1497506650;
+          "Kagi for Safari" = 1622835804;
+        };
+      };
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
@@ -59,7 +100,8 @@
       # Let home-manager install and manage itself.
       programs.home-manager.enable = true;
 
-      home.packages = with pkgs; [];
+      home.packages = with pkgs; [
+      ];
 
       home.sessionVariables = {
           EDITOR = "vscode";
