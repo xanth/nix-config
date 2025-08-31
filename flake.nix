@@ -17,9 +17,12 @@
   let
     hostConfig = import ./host.nix;
     configuration = { pkgs, ... }: {
-      nixpkgs.config.allowUnfree = true;
+      # Nixpkgs configuration
+      nixpkgs = {
+        config.allowUnfree = true;
+        hostPlatform = "aarch64-darwin";
+      };
 
-      system.primaryUser = hostConfig.userName;
       users.knownUsers = [
         hostConfig.userName
       ];
@@ -65,21 +68,21 @@
         };
       };
 
-      # Necessary for using flakes on this system.
+      # System configuration
+      system = {
+        # Set Git commit hash for darwin-version
+        configurationRevision = self.rev or self.dirtyRev or null;
+        # Used for backwards compatibility, please read the changelog before changing
+        # $ darwin-rebuild changelog
+        stateVersion = 6;
+        primaryUser = hostConfig.userName;
+      };
+
+      # Nix configuration
       nix.settings.experimental-features = "nix-command flakes";
 
       # Enable alternative shell support in nix-darwin.
       # programs.fish.enable = true;
-
-      # Set Git commit hash for darwin-version.
-      system.configurationRevision = self.rev or self.dirtyRev or null;
-
-      # Used for backwards compatibility, please read the changelog before changing.
-      # $ darwin-rebuild changelog
-      system.stateVersion = 6;
-
-      # The platform the configuration will be used on.
-      nixpkgs.hostPlatform = "aarch64-darwin";
 
       # Declare the user that will be running `nix-darwin`.
       users.users.${hostConfig.userName} = {
