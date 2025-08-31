@@ -30,28 +30,28 @@
         hostConfig.userName
       ];
 
-      environment.systemPackages =
-        [ pkgs.vim 
-          
-          pkgs.alacritty
-          pkgs.powershell
-          pkgs.zoxide
-          pkgs.fzf
-          pkgs.ripgrep
-          pkgs.bat
-          pkgs.ast-grep
-          pkgs.starship
-          pkgs.direnv
+      environment.systemPackages = with pkgs; [
+        vim 
+        
+        alacritty
+        powershell
+        zoxide
+        fzf
+        ripgrep
+        bat
+        ast-grep
+        starship
+        direnv
 
-          pkgs.vscode
-          pkgs.jetbrains.rider
-          
-          # .NET SDKs combined
-          (pkgs.dotnetCorePackages.combinePackages [
-            pkgs.dotnetCorePackages.sdk_9_0
-            pkgs.dotnetCorePackages.sdk_10_0
-          ])
-        ];
+        vscode
+        jetbrains.rider
+        
+        # .NET SDKs combined
+        (dotnetCorePackages.combinePackages [
+          dotnetCorePackages.sdk_9_0
+          dotnetCorePackages.sdk_10_0
+        ])
+      ];
 
       # System configuration
       system = {
