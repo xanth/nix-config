@@ -23,7 +23,6 @@
       users.knownUsers = [
         hostConfig.userName
       ];
-      users.users.${hostConfig.userName}.uid = hostConfig.userUid;
 
       environment.systemPackages =
         [ pkgs.vim 
@@ -86,6 +85,7 @@
       users.users.${hostConfig.userName} = {
          name = hostConfig.userName;
          home = hostConfig.homeDirectory;
+         uid = hostConfig.userUid;
       };
 
       # Create /etc/zshrc that loads the nix-darwin environment.
