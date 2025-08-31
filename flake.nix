@@ -15,14 +15,15 @@
 
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
   let
+    hostConfig = import ./host.nix;
     configuration = { pkgs, ... }: {
       nixpkgs.config.allowUnfree = true;
 
-      system.primaryUser = "rhys";
+      system.primaryUser = hostConfig.userName;
       users.knownUsers = [
-        "rhys"
+        hostConfig.userName
       ];
-      users.users.rhys.uid = 501;
+      users.users.${hostConfig.userName}.uid = hostConfig.userUid;
 
       environment.systemPackages =
         [ pkgs.vim 
@@ -82,9 +83,9 @@
       nixpkgs.hostPlatform = "aarch64-darwin";
 
       # Declare the user that will be running `nix-darwin`.
-      users.users.rhys = {
-         name = "rhys";
-         home = "/Users/rhys";
+      users.users.${hostConfig.userName} = {
+         name = hostConfig.userName;
+         home = hostConfig.homeDirectory;
       };
 
       # Create /etc/zshrc that loads the nix-darwin environment.
@@ -111,14 +112,14 @@
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."rhys-lap-osx" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations.${hostConfig.hostName} = nix-darwin.lib.darwinSystem {
       modules = [
         configuration
         home-manager.darwinModules.home-manager  {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.verbose = true;
-          home-manager.users.rhys = homeconfig;
+          home-manager.users.${hostConfig.userName} = homeconfig;
         }
       ];
     };
