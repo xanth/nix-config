@@ -33,7 +33,6 @@
       environment.systemPackages = with pkgs; [
         vim 
         
-        alacritty
         powershell
         zoxide
         fzf
@@ -42,15 +41,16 @@
         ast-grep
         starship
         direnv
-
-        vscode
-        jetbrains.rider
         
         # .NET SDKs combined
         (dotnetCorePackages.combinePackages [
           dotnetCorePackages.sdk_9_0
           dotnetCorePackages.sdk_10_0
         ])
+
+        alacritty
+        vscode
+        jetbrains.rider
       ];
 
       # System configuration
@@ -74,6 +74,9 @@
          name = hostConfig.userName;
          home = hostConfig.homeDirectory;
          uid = hostConfig.userUid;
+         # Workaround for alacritty terminfo issue
+         # https://github.com/nix-darwin/nix-darwin/issues/1493
+         shell = pkgs.powershell;
       };
 
       # Create /etc/zshrc that loads the nix-darwin environment.
