@@ -17,8 +17,9 @@
   let
     hostConfig = import ./host.nix;
     dockConfig = import ./dock.nix { inherit hostConfig; };
-    homebrewConfig = import ./homebrew.nix;
-    configuration = { pkgs, ... }: homebrewConfig // {
+    homebrew-config = import ./homebrew.nix;
+    user-preferences = import ./user-preferences.nix;
+    configuration = { pkgs, ... }: homebrew-config // user-preferences // {
       # Nixpkgs configuration
       nixpkgs = {
         config.allowUnfree = true;
