@@ -16,6 +16,7 @@
   outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
   let
     hostConfig = import ./host.nix;
+    dockConfig = import ./dock.nix;
     configuration = { pkgs, ... }: {
       # Nixpkgs configuration
       nixpkgs = {
@@ -76,22 +77,7 @@
         # $ darwin-rebuild changelog
         stateVersion = 6;
         primaryUser = hostConfig.userName;
-        
-        # Dock configuration
-        defaults.dock = {
-          autohide = true; # auto show and hide dock
-          autohide-delay = 0.0; # remove delay for showing dock
-          autohide-time-modifier = 0.2; # how fast is the dock showing animation
-          expose-animation-duration = 0.2; # duration of expose animation
-          tilesize = 16; # size of dock icons in pixels
-          launchanim = true; # animate icons when launching an app
-          showhidden = true; # show hidden applications in dock
-          show-recents = true; # show recently used applications
-          show-process-indicators = true; # show dots under running applications
-          orientation = "bottom"; # dock position on screen
-          mru-spaces = false; # disable most recently used spaces reordering
-        };
-      };
+      } // dockConfig;
 
       # Nix configuration
       nix.settings.experimental-features = "nix-command flakes";
