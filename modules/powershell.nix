@@ -1,40 +1,47 @@
 # PowerShell module - PowerShell installation and configuration
 { pkgs, hostConfig, ... }:
+let
+  # Import profile fragments
+  coreFragment = import ./powershell-fragments/core.nix;
+  aliasesFragment = import ./powershell-fragments/aliases.nix;
+  
+  # Compose profile content for different host locations
+  composeProfile = fragments: builtins.concatStringsSep "\n\n" fragments;
+  
+  # Profile content for different locations based on PowerShell's profile hierarchy
+  allUsersAllHostsContent = composeProfile [
+    coreFragment
+  ];
+  
+  allUsersCurrentHostContent = composeProfile [
+    aliasesFragment
+  ];
+  
+  currentUserAllHostsContent = composeProfile [
+    "# User-specific configurations that apply across all hosts"
+  ];
+  
+  currentUserCurrentHostContent = composeProfile [
+    "# User and host-specific configurations"
+    "# Source dotnet completions if available"
+    "if (Test-Path ~/.config/powershell/fragments/dotnet.ps1) {"
+    "  . ~/.config/powershell/fragments/dotnet.ps1"
+    "}"
+  ];
+in
 {
   environment.systemPackages = with pkgs; [
     powershell
-    
-    # .NET SDKs combined for completions
-    (dotnetCorePackages.combinePackages [
-      dotnetCorePackages.sdk_9_0
-      dotnetCorePackages.sdk_10_0
-    ])
   ];
 
   home-manager.users.${hostConfig.userName} = {
-    home.file.".config/powershell/Microsoft.PowerShell_profile.ps1".text = ''
-      # Enable .NET CLI completions
-      Register-ArgumentCompleter -Native -CommandName dotnet -ScriptBlock {
-        param($commandName, $wordToComplete, $cursorPosition)
-        dotnet complete --position $cursorPosition "$wordToComplete" | ForEach-Object {
-          [System.Management.Automation.CompletionResult]::new($_, $_, 'ParameterValue', $_)
-        }
-      }
-
-      # Set PowerShell to use UTF-8 encoding
-      [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-      [Console]::InputEncoding = [System.Text.Encoding]::UTF8
-
-      # Import PSReadLine for better command line editing
-      if (Get-Module -ListAvailable -Name PSReadLine) {
-        Import-Module PSReadLine
-        Set-PSReadLineOption -PredictionSource History
-        Set-PSReadLineOption -HistorySearchCursorMovesToEnd
-      }
-
-      # Common aliases
-      Set-Alias ll Get-ChildItem
-      Set-Alias la 'Get-ChildItem -Force -Hidden'
-    '';
+    # Create the fragments directory structure
+    home.file.".config/powershell/fragments/.keep".text = "";
+    
+    # CurrentUserAllHosts: ~/.config/powershell/profile.ps1
+    home.file.".config/powershell/profile.ps1".text = currentUserAllHostsContent;
+    
+    # CurrentUserCurrentHost: ~/.config/powershell/Microsoft.PowerShell_profile.ps1
+    home.file.".config/powershell/Microsoft.PowerShell_profile.ps1".text = currentUserCurrentHostContent;
   };
 }

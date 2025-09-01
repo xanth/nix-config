@@ -21,6 +21,7 @@
     systemPreferencesModule = import ./modules/system-preferences.nix;
     alacrittyModule = import ./modules/alacritty.nix;
     powershellModule = import ./modules/powershell.nix;
+    dotnetModule = import ./modules/dotnet.nix;
     homeconfig = {pkgs, ...}: {
       # this is internal compatibility configuration 
       # for home-manager, don't change this!
@@ -44,6 +45,7 @@
         ({ pkgs, ... }: dockModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: dotnetModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
           nixpkgs = {
