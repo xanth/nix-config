@@ -32,6 +32,9 @@
       home.packages = with pkgs; [
       ];
 
+      # Enable font management
+      fonts.fontconfig.enable = true;
+
       home.sessionVariables = {
           EDITOR = "vscode";
       };
@@ -71,6 +74,8 @@
             
             vscode
             jetbrains.rider
+
+            fira-code
           ];
 
           # System configuration
