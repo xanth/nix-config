@@ -4,6 +4,7 @@ let
   # Import profile fragments
   coreFragment = import ./powershell-fragments/core.nix;
   aliasesFragment = import ./powershell-fragments/aliases.nix;
+  zoxideFragment = import ./powershell-fragments/zoxide.nix;
   
   # Compose profile content for different host locations
   composeProfile = fragments: builtins.concatStringsSep "\n\n" fragments;
@@ -15,6 +16,7 @@ let
   
   allUsersCurrentHostContent = composeProfile [
     aliasesFragment
+    zoxideFragment
   ];
   
   currentUserAllHostsContent = composeProfile [
