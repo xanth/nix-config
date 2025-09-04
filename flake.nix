@@ -22,6 +22,7 @@
     alacrittyModule = import ./modules/alacritty.nix;
     powershellModule = import ./modules/powershell.nix;
     dotnetModule = import ./modules/dotnet.nix;
+    starshipModule = import ./modules/starship.nix;
     homeconfig = {pkgs, ...}: {
       # this is internal compatibility configuration 
       # for home-manager, don't change this!
@@ -49,6 +50,7 @@
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: dotnetModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: starshipModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
           nixpkgs = {
@@ -69,7 +71,6 @@
             ripgrep
             bat
             ast-grep
-            starship
             direnv
             
             vscode
