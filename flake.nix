@@ -74,7 +74,6 @@
             direnv
             
             vscode
-            jetbrains.rider
 
             fira-code
           ];
