@@ -4,6 +4,7 @@
   environment.systemPackages = with pkgs; [
     # .NET SDKs combined for completions
     (dotnetCorePackages.combinePackages [
+      dotnetCorePackages.sdk_8_0
       dotnetCorePackages.sdk_9_0
       dotnetCorePackages.sdk_10_0
     ])
