@@ -2,20 +2,10 @@
 { pkgs, hostConfig, ... }:
 let
   # Import profile fragments
-  coreFragment = import ./powershell.core.nix;
   aliasesFragment = import ./powershell.aliases.nix;
 
   # Compose profile content for different host locations
   composeProfile = fragments: builtins.concatStringsSep "\n\n" fragments;
-  
-  # Profile content for different locations based on PowerShell's profile hierarchy
-  allUsersAllHostsContent = composeProfile [
-    coreFragment
-  ];
-  
-  allUsersCurrentHostContent = composeProfile [
-    aliasesFragment
-  ];
   
   currentUserAllHostsContent = composeProfile [
     ''
@@ -29,6 +19,7 @@ let
     Get-ChildItem -Path ~/.config/powershell/fragments -Filter *.ps1 `
       | ForEach-Object { . $_.FullName }
     ''
+    aliasesFragment
   ];
 in
 {
