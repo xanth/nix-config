@@ -72,6 +72,7 @@
             bat
             ast-grep
             direnv
+            podman
             
             vscode
 
