@@ -19,10 +19,15 @@
     dockModule = import ./modules/system-dock.nix;
     homebrewModule = import ./modules/system-homebrew.nix;
     systemPreferencesModule = import ./modules/system-preferences.nix;
+    
     alacrittyModule = import ./modules/alacritty.nix;
-    powershellModule = import ./modules/powershell.nix;
+    
     dotnetModule = import ./modules/dotnet.nix;
+    zoxideModule = import ./modules/zoxide.nix;
     starshipModule = import ./modules/starship.nix;
+    
+    powershellModule = import ./modules/powershell.nix;
+    
     homeconfig = {pkgs, ...}: {
       # this is internal compatibility configuration 
       # for home-manager, don't change this!
@@ -48,9 +53,10 @@
         ({ pkgs, ... }: systemPreferencesModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: dockModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: alacrittyModule { inherit pkgs hostConfig; })
-        ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: dotnetModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: zoxideModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: starshipModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
           nixpkgs = {
@@ -66,7 +72,6 @@
             vim
 
             # cli tools
-            zoxide
             fzf
             ripgrep
             bat

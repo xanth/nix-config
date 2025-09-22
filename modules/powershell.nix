@@ -4,7 +4,6 @@ let
   # Import profile fragments
   coreFragment = import ./powershell.core.nix;
   aliasesFragment = import ./powershell.aliases.nix;
-  zoxideFragment = import ./powershell.zoxide.nix;
 
   # Compose profile content for different host locations
   composeProfile = fragments: builtins.concatStringsSep "\n\n" fragments;
@@ -16,7 +15,6 @@ let
   
   allUsersCurrentHostContent = composeProfile [
     aliasesFragment
-    zoxideFragment
   ];
   
   currentUserAllHostsContent = composeProfile [
@@ -27,15 +25,9 @@ let
   
   currentUserCurrentHostContent = composeProfile [
     ''
-    # User and host-specific configurations
-    # Initialize Starship prompt
-    if (Get-Command starship -ErrorAction SilentlyContinue) {
-      Invoke-Expression (&starship init powershell)
-    }
-    # Source dotnet completions if available
-    if (Test-Path ~/.config/powershell/fragments/dotnet.ps1) {
-      . ~/.config/powershell/fragments/dotnet.ps1
-    }
+    # run all files in fragments
+    Get-ChildItem -Path ~/.config/powershell/fragments -Filter *.ps1 `
+      | ForEach-Object { . $_.FullName }
     ''
   ];
 in
