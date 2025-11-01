@@ -17,6 +17,7 @@
     casks = [
       "github"
       "AlDente"
+      "linearmouse"
     ];
     masApps = {
       "Bitwarden" = 1352778147;
