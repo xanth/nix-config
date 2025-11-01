@@ -15,6 +15,9 @@ let
   
   currentUserCurrentHostContent = composeProfile [
     ''
+    # Add nix-darwin paths to PATH
+    $env:PATH = "/run/current-system/sw/bin:$env:PATH"
+    
     # run all files in fragments
     Get-ChildItem -Path ~/.config/powershell/fragments -Filter *.ps1 `
       | ForEach-Object { . $_.FullName }
