@@ -25,6 +25,7 @@
     dotnetModule = import ./modules/dotnet.nix;
     zoxideModule = import ./modules/zoxide.nix;
     starshipModule = import ./modules/starship.nix;
+    gpgModule = import ./modules/gpg.nix;
     
     powershellModule = import ./modules/powershell.nix;
     
@@ -56,6 +57,7 @@
         ({ pkgs, ... }: dotnetModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: zoxideModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: starshipModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: gpgModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
