@@ -15,12 +15,19 @@ let
   
   currentUserCurrentHostContent = composeProfile [
     ''
-    # Add nix-darwin paths to PATH
-    $env:PATH = "/run/current-system/sw/bin:$env:PATH"
+    # Add nix-darwin paths to PATH (only if not already present)
+    if (-not $env:PATH.Contains("/run/current-system/sw/bin")) {
+      $env:PATH = "/run/current-system/sw/bin:$env:PATH"
+    }
     
-    # run all files in fragments
-    Get-ChildItem -Path ~/.config/powershell/fragments -Filter *.ps1 `
-      | ForEach-Object { . $_.FullName }
+    # run all files in fragments (if directory exists)
+    $fragmentsPath = Join-Path $HOME ".config/powershell/fragments"
+    if (Test-Path $fragmentsPath) {
+      Get-ChildItem -Path $fragmentsPath -Filter *.ps1 -ErrorAction SilentlyContinue `
+        | ForEach-Object { 
+          try { . $_.FullName } catch { Write-Warning "Failed to load fragment: $($_.Name)" }
+        }
+    }
     ''
     aliasesFragment
   ];

@@ -11,9 +11,13 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager }:
+  outputs = inputs@{ self, nixpkgs, nix-darwin, home-manager, sops-nix }:
   let
     hostConfig = import ./host.nix;
     dockModule = import ./modules/system-dock.nix;
@@ -26,6 +30,8 @@
     zoxideModule = import ./modules/zoxide.nix;
     starshipModule = import ./modules/starship.nix;
     gpgModule = import ./modules/gpg.nix;
+    gitModule = import ./modules/git.nix;
+    sopsModule = import ./modules/sops.nix;
     
     powershellModule = import ./modules/powershell.nix;
     
@@ -58,6 +64,8 @@
         ({ pkgs, ... }: zoxideModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: starshipModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: gpgModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: gitModule { inherit pkgs hostConfig; })
+        ({ pkgs, ... }: sopsModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
         ({ pkgs, ... }: {
           # Nixpkgs configuration
@@ -115,10 +123,14 @@
           # Enabled TouchID for sudo
           security.pam.services.sudo_local.touchIdAuth = true;
         })
-        home-manager.darwinModules.home-manager  {
+        home-manager.darwinModules.home-manager
+        {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.verbose = true;
+          home-manager.sharedModules = [
+            sops-nix.homeManagerModules.sops
+          ];
           home-manager.users.${hostConfig.userName} = homeconfig;
         }
       ];

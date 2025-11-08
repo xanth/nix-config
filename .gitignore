@@ -1,0 +1,19 @@
+# Nix build results
+result
+result-*
+
+# SOPS - ignore plaintext secrets (encrypted files are OK to commit)
+secrets/*-plaintext.yaml
+secrets/example-*.yaml
+*.key
+*.pem
+
+# Age keys
+.config/sops/age/keys.txt
+
+# Temporary files
+*.swp
+*.swo
+*~
+.DS_Store
+
