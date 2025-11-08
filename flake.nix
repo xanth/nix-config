@@ -90,6 +90,7 @@
             ast-grep
             direnv
             podman
+            cursor-cli
             
             vscode
 
