@@ -81,7 +81,12 @@
     {
       # Pre-commit checks
       checks.${system} = {
+        # Formatting check
         pre-commit = pre-commit-check;
+
+        # Build the full darwin system configuration
+        # This verifies: system builds, packages exist, configuration is valid
+        darwin-system = self.darwinConfigurations.${hostConfig.hostName}.system;
       };
 
       # Development shell with pre-commit hooks
