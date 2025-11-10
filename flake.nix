@@ -91,6 +91,7 @@
             direnv
             podman
             cursor-cli
+            nixfmt-rfc-style
             
             vscode
 
