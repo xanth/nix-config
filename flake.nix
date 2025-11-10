@@ -43,9 +43,6 @@
       # Let home-manager install and manage itself.
       programs.home-manager.enable = true;
 
-      home.packages = with pkgs; [
-      ];
-
       # Enable font management
       fonts.fontconfig.enable = true;
 
@@ -82,6 +79,9 @@
 
           environment.systemPackages = with pkgs; [
             vim
+            (python3.withPackages (ps: with ps; [
+              pip
+            ]))
 
             # cli tools
             fzf
