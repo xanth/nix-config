@@ -15,14 +15,20 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
     {
       self,
+      nixpkgs,
       nix-darwin,
       home-manager,
       sops-nix,
+      git-hooks,
       ...
     }:
     let
@@ -59,8 +65,38 @@
             EDITOR = "vscode";
           };
         };
+      system = "aarch64-darwin";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+
+      pre-commit-check = git-hooks.lib.${system}.run {
+        src = ./.;
+        hooks = {
+          nixfmt-rfc-style.enable = true;
+        };
+      };
     in
     {
+      # Pre-commit checks
+      checks.${system} = {
+        pre-commit = pre-commit-check;
+      };
+
+      # Development shell with pre-commit hooks
+      devShells.${system}.default = pkgs.mkShellNoCC {
+        packages =
+          with pkgs;
+          [
+            nixfmt-rfc-style
+          ]
+          ++ pre-commit-check.enabledPackages;
+        shellHook = ''
+          ${pre-commit-check.shellHook}
+        '';
+      };
+
       darwinConfigurations.${hostConfig.hostName} = nix-darwin.lib.darwinSystem {
         modules = [
           ({ pkgs, ... }: homebrewModule { inherit pkgs hostConfig; })
@@ -105,6 +141,7 @@
                 podman
                 cursor-cli
                 nixfmt-rfc-style
+                pre-commit
 
                 vscode
 
