@@ -55,4 +55,3 @@
     home.file.".gnupg/.keep".text = "";
   };
 }
-

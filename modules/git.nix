@@ -8,10 +8,9 @@
   home-manager.users.${hostConfig.userName} = {
     programs.git = {
       enable = true;
-      
+
       userName = "Rhys Williams";
       userEmail = "5460583+xanth@users.noreply.github.com";
     };
   };
 }
-

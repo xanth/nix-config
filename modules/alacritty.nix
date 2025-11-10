@@ -44,7 +44,7 @@
         terminal = {
           shell = {
             program = "${pkgs.powershell}/bin/pwsh";
-            args = [];
+            args = [ ];
           };
         };
 
