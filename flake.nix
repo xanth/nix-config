@@ -138,6 +138,7 @@
                 ))
 
                 # cli tools
+                jq
                 fzf
                 ripgrep
                 bat
