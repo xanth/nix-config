@@ -1,7 +1,13 @@
+let
+  cpuArchitecture = "aarch64";
+  systemOperatingSystem = "darwin";
+  systemUser = "rhys";
+in
 {
   # Host-specific configuration
-  hostName = "rhys-lap-osx";
-  userName = "rhys";
+  hostName = "${systemUser}-lap-osx";
+  userName = systemUser;
   userUid = 501;
-  homeDirectory = "/Users/rhys";
+  homeDirectory = "/Users/${systemUser}";
+  systemArchitecture = "${cpuArchitecture}-${systemOperatingSystem}";
 }
