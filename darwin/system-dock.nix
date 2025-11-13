@@ -1,5 +1,5 @@
 # Dock module - macOS dock appearance and behavior settings
-{ pkgs, hostConfig, ... }:
+{ ... }:
 {
   system.defaults.dock = {
     autohide = true; # auto show and hide dock

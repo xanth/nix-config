@@ -1,5 +1,5 @@
 # Starship prompt configuration
-{ pkgs, hostConfig, ... }:
+{ hostConfig, ... }:
 let
   starshipConfig = import ./starship.configuration.nix;
 in

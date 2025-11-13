@@ -1,5 +1,5 @@
 # System Preferences module - macOS system preferences and app settings
-{ pkgs, hostConfig, ... }:
+{ ... }:
 {
   system.defaults.CustomUserPreferences = {
     NSGlobalDomain = {

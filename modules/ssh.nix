@@ -1,5 +1,5 @@
 # SSH module - SSH key and configuration
-{ pkgs, hostConfig, ... }:
+{ hostConfig, ... }:
 {
   home-manager.users.${hostConfig.userName} = {
     # Deploy SSH public key
