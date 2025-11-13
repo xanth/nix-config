@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   # this is internal compatibility configuration
   # for home-manager, don't change this!
