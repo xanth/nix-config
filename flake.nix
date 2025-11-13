@@ -45,6 +45,7 @@
       gpgModule = import ./modules/gpg.nix;
       gitModule = import ./modules/git.nix;
       sopsModule = import ./modules/sops.nix;
+      sshModule = import ./modules/ssh.nix;
       nixLanguageServerModule = import ./modules/nix-language-server.nix;
 
       powershellModule = import ./modules/powershell.nix;
@@ -114,6 +115,7 @@
           ({ pkgs, ... }: gpgModule { inherit pkgs hostConfig; })
           ({ pkgs, ... }: gitModule { inherit pkgs hostConfig; })
           ({ pkgs, ... }: sopsModule { inherit pkgs hostConfig; })
+          ({ pkgs, ... }: sshModule { inherit pkgs hostConfig; })
           ({ pkgs, ... }: nixLanguageServerModule { inherit pkgs hostConfig; })
           ({ pkgs, ... }: powershellModule { inherit pkgs hostConfig; })
           (
