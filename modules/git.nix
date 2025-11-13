@@ -9,8 +9,26 @@
     programs.git = {
       enable = true;
 
-      userName = "Rhys Williams";
-      userEmail = "5460583+xanth@users.noreply.github.com";
+      settings = {
+        user = {
+          name = "Rhys Williams";
+          email = "5460583+xanth@users.noreply.github.com";
+        };
+
+        # Force SSH instead of HTTPS for common git hosts
+        url."git@github.com:".insteadOf = [
+          "https://github.com/"
+          "git://github.com/"
+        ];
+        url."git@gitlab.com:".insteadOf = [
+          "https://gitlab.com/"
+          "git://gitlab.com/"
+        ];
+        url."git@bitbucket.org:".insteadOf = [
+          "https://bitbucket.org/"
+          "git://bitbucket.org/"
+        ];
+      };
     };
   };
 }
