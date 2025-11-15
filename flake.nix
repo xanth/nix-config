@@ -45,7 +45,7 @@
       sshModule = import ./modules/ssh.nix;
       nixLanguageServerModule = import ./modules/nix-language-server.nix;
 
-      powershellModule = import ./modules/powershell.nix;
+      powershellModule = import ./modules/powershell;
 
       homeconfig = import ./home.nix;
       darwinModule = import ./darwin;
