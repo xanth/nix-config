@@ -3,5 +3,6 @@
 {
   "aliases.ps1" = ./aliases.ps1;
   "PSReadLineKeyHandler-AICommandCompletion.ps1" = ./PSReadLineKeyHandler-AICommandCompletion.ps1;
-  "PSReadLineOption-AddToHistoryHandler.ps1" = ./PSReadLineOption-AddToHistoryHandler.ps1;
+  "PSReadLineOption-RetentionSuppressionHistoryHandler.ps1" =
+    ./PSReadLineOption-RetentionSuppressionHistoryHandler.ps1;
 }
