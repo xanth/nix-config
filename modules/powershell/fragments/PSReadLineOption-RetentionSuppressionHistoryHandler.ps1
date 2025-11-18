@@ -1,5 +1,27 @@
 # Customized version of https://github.com/PowerShell/PSReadLine/issues/2698#issuecomment-1439942616
 
+# Helper function to pause transcript for sensitive commands
+function Invoke-PauseTranscript {
+    Write-Debug "Invoking Suspend-AICommandCompletionTranscript";
+    try {
+        Suspend-AICommandCompletionTranscript
+    }
+    catch {
+        Write-Debug "Error suspending transcript: $_"
+    }
+}
+
+# Helper function to resume transcript after sensitive commands
+function Invoke-ResumeTranscript {
+    Write-Debug "Invoking Resume-AICommandCompletionTranscript";
+    try {
+        Resume-AICommandCompletionTranscript
+    }
+    catch {
+        Write-Debug "Error resuming transcript: $_"
+    }
+}
+
 $defaultHistoryHandler = (Get-PSReadLineOption).AddToHistoryHandler;
 Set-PSReadLineOption -AddToHistoryHandler {
     param([string]$line)
@@ -20,6 +42,7 @@ Set-PSReadLineOption -AddToHistoryHandler {
     if ($defaultHandlerResult -ne "MemoryAndFile")
     {
         Write-Debug "History retention has already been suppressed: $defaultHandlerResult";
+        Invoke-PauseTranscript
         return $defaultHandlerResult;
     }
     
@@ -27,15 +50,18 @@ Set-PSReadLineOption -AddToHistoryHandler {
     if ($line.StartsWith(";;"))
     {
         Write-Debug "SkipAdding: $line";
+        Invoke-PauseTranscript
         return "SkipAdding";
     }
     # MemoryOnly lines that start with single ;
     elseif ($line.StartsWith(";"))
     {
         Write-Debug "MemoryOnly: $line";
+        Invoke-PauseTranscript
         return "MemoryOnly";
     }
     
     Write-Debug "Returning default handler result: $defaultHandlerResult";
+    Invoke-ResumeTranscript
     return $defaultHandlerResult;    
 }

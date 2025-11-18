@@ -21,20 +21,36 @@ function AICommandCompletion {
   
   $commentText = $matches[1].Trim();
   
+  # Check if comment starts with ^ (include transcript)
+  $includeTranscript = $false;
+  if ($commentText.StartsWith('^')) {
+    $includeTranscript = $true;
+    $commentText = $commentText.Substring(1).Trim();
+  }
+  
   # Find the position of the first # character
   $commentIndex = $line.IndexOf('#');
   
   # Get the text before the comment
   $textBeforeComment = $line.Substring(0, $commentIndex);
   
+  # Read transcript if requested
+  $transcriptContent = "";
+  if ($includeTranscript) {
+    $transcript = Get-AICommandCompletionTranscript -Lines 2000;
+    if ($transcript) {
+      $transcriptContent = "`n`nRecent session transcript:`n```n$transcript`n```n`n";
+    }
+  }
+  
   # Build full prompt based on whether there's existing command text
   if ([string]::IsNullOrWhiteSpace($textBeforeComment)) {
     # Just a comment - use basePromptFullCommand
-    $fullPrompt = $basePromptFullCommand -f $commentText;
+    $fullPrompt = $transcriptContent + ($basePromptFullCommand -f $commentText);
   }
   else {
     # Existing command with comment - use basePromptPartialCommand
-    $fullPrompt = $basePromptPartialCommand -f $commentText, $textBeforeComment.Trim();
+    $fullPrompt = $transcriptContent + ($basePromptPartialCommand -f $commentText, $textBeforeComment.Trim());
   }
   
   # Call cursor-agent and get response
