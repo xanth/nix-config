@@ -20,9 +20,9 @@
       "linearmouse"
     ];
     masApps = {
-      "Bitwarden" = 1352778147;
-      "Yubico Authenticator" = 1497506650;
-      "Kagi for Safari" = 1622835804;
+      # "Bitwarden" = 1352778147;
+      # "Yubico Authenticator" = 1497506650;
+      # "Kagi for Safari" = 1622835804;
     };
   };
 }
